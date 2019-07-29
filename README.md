@@ -8,3 +8,8 @@
 - [ ] Functionality for !search and !skills commands
 - [ ] Use 'requests' and 'cheerio' to extract player info from OSRS leaderboards
 - [ ] Optimize function that handles all message requests
+
+#### Dependencies
+* discord.js
+* request
+* cheerio
