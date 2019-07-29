@@ -15,6 +15,9 @@ client.on("ready", () => {
     client.user.setActivity(`I am in ${client.guilds.size} servers`);
 });
 
+/**
+ * Set's activity of the bot to number of servers it's used in
+ */
 client.on("guildCreate", guild => {
     // update number of servers
     client.user.setActivity(`RuneStats is in ${client.guilds.size} servers`);
