@@ -32,25 +32,29 @@ client.on("message", async msg => {
         return;
     }
 
+    const commandArr = ["!test", "!help"]; // list of commands
+    var existingCommand = commandArr.includes(msg.content); // T if found, F otherwise
+
     // checks if command starts with defined prefix
-    if (!msg.content.startsWith(prefix)) {
-        msg.channel.send("" + msg.content + " is not a valid command! Type !help for a full list of commands.");
+    if (msg.content.charAt(0) != prefix) {
+        msg.channel.send(msg.content + " is not a valid command! Type !help for a full list of commands.");
+    } else if (!existingCommand) {
+        msg.channel.send(msg.content + " is not a valid command! Type !help for a full list of commands.");
     }
 
     // sets command to string after prefix
     const command = msg.content.substring(1);
-
-    // test block, remove when done
+    
+    // all commands that work 
     if (command === "test") {
         msg.channel.sendMessage("RuneStats is on!");
-    }
+    } 
 
-    // list of commands TODO: find a better way to format ths
-    if (command === "help") {
-        msg.channel.sendMessage("```!search <username> (retrieves stats for specified user)\n" +
+    // posts list of commands
+    if (command === "help") { 
+        msg.channel.sendMessage("```!search <username> (retrieves stats for specified user)\n\n" +
         "!skills <username> (lists all skills for specified user)```");
     }
-
 })
 
 // bot token, also logs the authentification process
