@@ -21,41 +21,42 @@ client.on("ready", () => {
 client.on("guildCreate", guild => {
     // update number of servers
     client.user.setActivity(`RuneStats is in ${client.guilds.size} servers`);
-})
+});
 
 /**
  * Handles all message requests
  */
 client.on("message", async msg => {
-    // ignores messages from bots
-    if (msg.author.bot) {
+
+    // ignores messages from bots & regular messages
+    if (msg.author.bot || !msg.content.startsWith(prefix)) {
         return;
     }
 
-    const commandArr = ["!test", "!help"]; // list of commands
-    var existingCommand = commandArr.includes(msg.content); // T if found, F otherwise
+    // separates arguments from commands
+    const args = msg.content.slice(prefix.length).split((' '));
+    const command = args.shift().toLowerCase();
 
-    // checks if command starts with defined prefix
-    if (msg.content.charAt(0) != prefix) {
-        msg.channel.send(msg.content + " is not a valid command! Type !help for a full list of commands.");
-    } else if (!existingCommand) {
-        msg.channel.send(msg.content + " is not a valid command! Type !help for a full list of commands.");
-    }
-
-    // sets command to string after prefix
-    const command = msg.content.substring(1);
-    
     // all commands that work 
     if (command === "test") {
         msg.channel.sendMessage("RuneStats is on!");
-    } 
+    }
 
     // posts list of commands
     if (command === "help") { 
         msg.channel.sendMessage("```!search <username> (retrieves stats for specified user)\n\n" +
         "!skills <username> (lists all skills for specified user)```");
     }
-})
+    
+    // player search functionality
+    if (command === "search") {
+        var username = args[0];
+        if (!args.length) {
+            msg.channel.sendMessage("Please provide a username!");
+        }
+        msg.channel.sendMessage('Searching OSRS stats for **' + username + "**");
+    }
+});
 
 // bot token, also logs the authentification process
 client.login(config.token).catch(err => console.log('Failed to authenticate with token'));
