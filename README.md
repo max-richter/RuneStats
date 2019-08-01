@@ -8,6 +8,7 @@
 - [ ] Functionality for !search and !skills commands
 - [ ] Use 'requests' and 'cheerio' to extract player info from OSRS leaderboards
 - [ ] Optimize function that handles all message requests
+- [ ] OPTIONAL: Add emoji's for all skills
 
 #### Dependencies
 * discord.js
