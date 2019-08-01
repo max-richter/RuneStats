@@ -1,4 +1,6 @@
 const Discord = require("discord.js");
+const request = require("request");
+const cheerio = require("cheerio");
 const client = new Discord.Client();
 const prefix = "!";
 const config = require("./config");
@@ -39,12 +41,12 @@ client.on("message", async msg => {
 
     // all commands that work 
     if (command === "test") {
-        msg.channel.sendMessage("RuneStats is on!");
+        msg.channel.send("RuneStats is **[on]**");
     }
 
     // posts list of commands
     if (command === "help") { 
-        msg.channel.sendMessage("```!search <username> (retrieves stats for specified user)\n\n" +
+        msg.channel.send("```!search <username> (retrieves stats for specified user)\n\n" +
         "!skills <username> (lists all skills for specified user)```");
     }
     
@@ -52,9 +54,9 @@ client.on("message", async msg => {
     if (command === "search") {
         var username = args[0];
         if (!args.length) {
-            msg.channel.sendMessage("Please provide a username!");
+            msg.channel.send("Please provide a username!");
         }
-        msg.channel.sendMessage('Searching OSRS stats for **' + username + "**");
+        msg.channel.send('Searching OSRS stats for **' + username + "**");
     }
 });
 
