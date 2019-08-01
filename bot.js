@@ -4,6 +4,7 @@ const cheerio = require("cheerio");
 const client = new Discord.Client();
 const prefix = "!";
 const config = require("./config");
+const url = "https://secure.runescape.com/m=hiscore_oldschool/hiscorepersonal.ws?user1=";
 
 /**
  * Confirmation that bot is on, posted to terminal.
@@ -52,11 +53,65 @@ client.on("message", async msg => {
     
     // player search functionality
     if (command === "search") {
-        var username = args[0];
+    
         if (!args.length) {
             msg.channel.send("Please provide a username!");
+        } else {
+            var username = args[0];
+            msg.channel.send(':mag_right: Searching OSRS stats for **' + username + "**");
+
+            // begin the search
+            request(url + username, function(error, response, html) {
+
+                if (!error && response.statusCode == 200) {
+                    var $ = cheerio.load(html);
+
+                    // arrays that hold player data
+                    var skillsArr = new Array();
+                    var rankArr = new Array();
+                    var lvlArr = new Array();
+                    var xpArr = new Array();
+
+                    // find stats
+                    $('tr').each(function(i, element) {
+                        // store element objects
+                        var skills = $(this).next().children().children(); // skills
+                        var rank = $(this).next().children().eq(2); // rank
+                        var skillLvl = $(this).next().children().eq(3); // skill levels
+                        var xp = $(this).next().children().eq(4); // xp
+
+                        skillsArr.push(skills.text());
+                        rankArr.push(rank.text());
+                        lvlArr.push(skillLvl.text());
+                        xpArr.push(xp.text());
+
+                    });
+
+                    // sort skills
+                    skillsArr = skillsArr.splice(4);
+                    rankArr = rankArr.splice(4);
+                    lvlArr = lvlArr.splice(4);
+                    xpArr = xpArr.splice(4);
+
+                    // check if user was found in db
+                    if (skillsArr[0] == undefined) {
+                        msg.channel.send(":x: **" + username + "** wasn't found!");
+                    } else {
+                        // fix formatting issues
+                        for (var i = 0; i < 24; i++) {
+                        skillsArr[i] = skillsArr[i].replace(/(\r\n|\n|\r)/gm," ");
+                        rankArr[i] = rankArr[i].replace(/(\r\n|\n|\r)/gm," ");
+                        lvlArr[i] = lvlArr[i].replace(/(\r\n|\n|\r)/gm," ");
+                        xpArr[i] = xpArr[i].replace(/(\r\n|\n|\r)/gm," ");
+                        }
+                        msg.channel.send(skillsArr[0] + lvlArr[0] +  " " + rankArr[0] + " " + xpArr[0]); // testing output
+                    }
+                }
+
+            });
+
         }
-        msg.channel.send('Searching OSRS stats for **' + username + "**");
+        
     }
 });
 
