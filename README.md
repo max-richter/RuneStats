@@ -7,7 +7,7 @@
 - [x] Add token error handling
 - [x] Functionality for !search command
 - [x] Use 'requests' and 'cheerio' to extract player info from OSRS leaderboards
-- [ ] Optimize function that handles all message requests
+- [ ] Add search functionality for ironman, hardcore ironman, ultimate ironman
 
 #### Dependencies
 * discord.js
