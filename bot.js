@@ -108,51 +108,47 @@ client.on("message", async msg => {
                         xpArr[i] = xpArr[i].replace(/(\r\n|\n|\r)/gm," ");
                         }
                         embeddedMessage();
-
                     }
 
                     function embeddedMessage() {
                         const embed = new Discord.RichEmbed()
                             .setColor("#86C3FF")
-                            .setTitle(username + "'s Stat Page")
+                            .setTitle("View Complete Stat Page")
                             .setURL(url + username)
-                            .setAuthor("RuneStats")
+                            .setAuthor(username + "'s OSRS Stats")
                             .setThumbnail(playerPic + username + "/chat.png")
                             .setFooter("@max-richter", client.user.avatarURL)
-                            .addField("**Overall**", lvlArr[0], true)
-                            .addField("**Attack**", lvlArr[1], true)
-                            .addField("**Defence**", lvlArr[2], true)
-                            .addField("**Strength**", lvlArr[3], true)
-                            .addField("**Hitpoints**", lvlArr[4], true)
-                            .addField("**Ranged**", lvlArr[5], true)
-                            .addField("**Prayer**", lvlArr[6], true)
-                            .addField("**Magic**", lvlArr[7], true)
-                            .addField("**Cooking**", lvlArr[8], true)
-                            .addField("**Woodcutting**", lvlArr[9], true)
-                            .addField("**Fletching**", lvlArr[10], true)
-                            .addField("**Fishing**", lvlArr[11], true)
-                            .addField("**Firemaking**", lvlArr[12], true)
-                            .addField("**Crafting**", lvlArr[13], true)
-                            .addField("**Smithing**", lvlArr[14], true)
-                            .addField("**Mining**", lvlArr[15], true)
-                            .addField("**Herblore**", lvlArr[16], true)
-                            .addField("**Agility**", lvlArr[17], true)
-                            .addField("**Thieving**", lvlArr[18], true)
-                            .addField("**Slayer**", lvlArr[19], true)
-                            .addField("**Farming**", lvlArr[20], true)
-                            .addField("**Runecraft**", lvlArr[21], true)
-                            .addField("**Hunter**", lvlArr[22], true)
-                            .addField("**Construction**", lvlArr[23], true)
+                            .addField("__**Attack**__", "LVL: *" + lvlArr[1] + "*\nXP: *" + xpArr[1] + "*", true)
+                            .addField("__**Defence**__", "LVL: *" + lvlArr[2] + "*\nXP: *" + xpArr[2] + "*", true)
+                            .addField("__**Strength**__", "LVL: *" + lvlArr[3] + "*\nXP: *" + xpArr[3] + "*", true)
+                            .addField("__**Hitpoints**__", "LVL: *" + lvlArr[4] + "*\nXP: *" + xpArr[4] + "*", true)
+                            .addField("__**Ranged**__", "LVL: *" + lvlArr[5] + "*\nXP: *" + xpArr[5] + "*", true)
+                            .addField("__**Prayer**__", "LVL: *" + lvlArr[6] + "*\nXP: *" + xpArr[6] + "*", true)
+                            .addField("__**Magic**__", "LVL: *" + lvlArr[7] + "*\nXP: *" + xpArr[7] + "*", true)
+                            .addField("__**Cooking**__", "LVL: *" + lvlArr[8] + "*\nXP: *" + xpArr[8] + "*", true)
+                            .addField("__**Woodcutting**__", "LVL: *" + lvlArr[9] + "*\nXP: *" + xpArr[9] + "*", true)
+                            .addField("__**Fletching**__", "LVL: *" + lvlArr[10] + "*\nXP: *" + xpArr[10] + "*", true)
+                            .addField("__**Fishing**__", "LVL: *" + lvlArr[11] + "*\nXP: *" + xpArr[11] + "*", true)
+                            .addField("__**Firemaking**__", "LVL: *" + lvlArr[12] + "*\nXP: *" + xpArr[12] + "*", true)
+                            .addField("__**Crafting**__", "LVL: *" + lvlArr[13] + "*\nXP: *" + xpArr[13] + "*", true)
+                            .addField("__**Smithing**__", "LVL: *" + lvlArr[14] + "*\nXP: *" + xpArr[14] + "*", true)
+                            .addField("__**Mining**__", "LVL: *" + lvlArr[15] + "*\nXP: *" + xpArr[15] + "*", true)
+                            .addField("__**Herblore**__", "LVL: *" + lvlArr[16] + "*\nXP: *" + xpArr[16] + "*", true)
+                            .addField("__**Agility**__", "LVL: *" + lvlArr[17] + "*\nXP: *" + xpArr[17] + "*", true)
+                            .addField("__**Thieving**__", "LVL: *" + lvlArr[18] + "*\nXP: *" + xpArr[18] + "*", true)
+                            .addField("__**Slayer**__", "LVL: *" + lvlArr[19] + "*\nXP: *" + xpArr[19] + "*", true)
+                            .addField("__**Farming**__", "LVL: *" + lvlArr[20] + "*\nXP: *" + xpArr[20] + "*", true)
+                            .addField("__**Runecraft**__", "LVL: *" + lvlArr[21] + "*\nXP: *" + xpArr[21] + "*", true)
+                            .addField("__**Hunter**__", "LVL: *" + lvlArr[22] + "*\nXP: *" + xpArr[22] + "*", true)
+                            .addField("__**Construction**__", "LVL: *" + lvlArr[23] + "*\nXP: *" + xpArr[23] + "*", true)
+                            .addField("__**Overall**__", "LVL: *" + lvlArr[0] + "*\nXP: *" + xpArr[0] + "*", true)
                             .setTimestamp()
 
                         msg.channel.send(embed);
                     }
                 }
-
             });
-
-        }
-        
+        }       
     }
 });
 
