@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const request = require("request").defaults({
-    timeout: 15000
+    timeout: 15000 // request times out after 15 seconds
 });
 const cheerio = require("cheerio");
 const client = new Discord.Client();
@@ -56,16 +56,17 @@ client.on("message", async msg => {
     
     // player search functionality
     if (command === "search") {
-    
+        // check if user provides a username
         if (!args.length) {
             msg.channel.send("Please provide a username!");
         } else {
+            // success message sent, username stored to array
             var username = args[0];
             msg.channel.send(':mag_right: Searching OSRS stats for **' + username + "**");
 
             // begin the search
             request(url + username, function(error, response, html) {
-
+                // check if website was reached successfully
                 if (!error && response.statusCode == 200) {
                     var $ = cheerio.load(html);
 
