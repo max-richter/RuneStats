@@ -71,30 +71,30 @@ client.on("message", async msg => {
 
                     // arrays that hold player data
                     var skillsArr = new Array();
-                    var rankArr = new Array();
+                    //var rankArr = new Array(); TODO: think about whether to keep this or not
                     var lvlArr = new Array();
-                    var xpArr = new Array();
+                    var xpArr = new Array(); 
 
                     // find stats
                     $('tr').each(function(i, element) {
                         // store element objects
                         var skills = $(this).next().children().children(); // skills
-                        var rank = $(this).next().children().eq(2); // rank
+                        //var rank = $(this).next().children().eq(2); TODO: think about whether to keep this or not
                         var skillLvl = $(this).next().children().eq(3); // skill levels
                         var xp = $(this).next().children().eq(4); // xp
 
                         skillsArr.push(skills.text());
-                        rankArr.push(rank.text());
+                        //rankArr.push(rank.text()); TODO: think about whether to keep this or not
                         lvlArr.push(skillLvl.text());
-                        xpArr.push(xp.text());
+                        xpArr.push(xp.text()); 
 
                     });
 
                     // sort skills
                     skillsArr = skillsArr.splice(4);
-                    rankArr = rankArr.splice(4);
                     lvlArr = lvlArr.splice(4);
                     xpArr = xpArr.splice(4);
+                    //rankArr = rankArr.splice(4); TODO: think about whether to keep this or not
 
                     // check if user was found in db
                     if (skillsArr[0] == undefined) {
@@ -103,13 +103,19 @@ client.on("message", async msg => {
                         // fix formatting issues
                         for (var i = 0; i < 24; i++) {
                         skillsArr[i] = skillsArr[i].replace(/(\r\n|\n|\r)/gm," ");
-                        rankArr[i] = rankArr[i].replace(/(\r\n|\n|\r)/gm," ");
+                        //rankArr[i] = rankArr[i].replace(/(\r\n|\n|\r)/gm," "); TODO: think about whether to keep this or not
                         lvlArr[i] = lvlArr[i].replace(/(\r\n|\n|\r)/gm," ");
                         xpArr[i] = xpArr[i].replace(/(\r\n|\n|\r)/gm," ");
+                        }
+                        // put LVL/XP into array with formatting
+                        var lvlXPArr = new Array();
+                        for (var i = 0; i < 24; i++) {
+                            lvlXPArr.push("LVL: *" + lvlArr[i] + "*\nXP: *" + xpArr[i] + "*")
                         }
                         embeddedMessage();
                     }
 
+                    // here the bot creates and sends an embedded message
                     function embeddedMessage() {
                         const embed = new Discord.RichEmbed()
                             .setColor("#86C3FF")
@@ -118,32 +124,31 @@ client.on("message", async msg => {
                             .setAuthor(username + "'s OSRS Stats")
                             .setThumbnail(playerPic + username + "/chat.png")
                             .setFooter("@max-richter", client.user.avatarURL)
-                            .addField("__**Attack**__", "LVL: *" + lvlArr[1] + "*\nXP: *" + xpArr[1] + "*", true)
-                            .addField("__**Defence**__", "LVL: *" + lvlArr[2] + "*\nXP: *" + xpArr[2] + "*", true)
-                            .addField("__**Strength**__", "LVL: *" + lvlArr[3] + "*\nXP: *" + xpArr[3] + "*", true)
-                            .addField("__**Hitpoints**__", "LVL: *" + lvlArr[4] + "*\nXP: *" + xpArr[4] + "*", true)
-                            .addField("__**Ranged**__", "LVL: *" + lvlArr[5] + "*\nXP: *" + xpArr[5] + "*", true)
-                            .addField("__**Prayer**__", "LVL: *" + lvlArr[6] + "*\nXP: *" + xpArr[6] + "*", true)
-                            .addField("__**Magic**__", "LVL: *" + lvlArr[7] + "*\nXP: *" + xpArr[7] + "*", true)
-                            .addField("__**Cooking**__", "LVL: *" + lvlArr[8] + "*\nXP: *" + xpArr[8] + "*", true)
-                            .addField("__**Woodcutting**__", "LVL: *" + lvlArr[9] + "*\nXP: *" + xpArr[9] + "*", true)
-                            .addField("__**Fletching**__", "LVL: *" + lvlArr[10] + "*\nXP: *" + xpArr[10] + "*", true)
-                            .addField("__**Fishing**__", "LVL: *" + lvlArr[11] + "*\nXP: *" + xpArr[11] + "*", true)
-                            .addField("__**Firemaking**__", "LVL: *" + lvlArr[12] + "*\nXP: *" + xpArr[12] + "*", true)
-                            .addField("__**Crafting**__", "LVL: *" + lvlArr[13] + "*\nXP: *" + xpArr[13] + "*", true)
-                            .addField("__**Smithing**__", "LVL: *" + lvlArr[14] + "*\nXP: *" + xpArr[14] + "*", true)
-                            .addField("__**Mining**__", "LVL: *" + lvlArr[15] + "*\nXP: *" + xpArr[15] + "*", true)
-                            .addField("__**Herblore**__", "LVL: *" + lvlArr[16] + "*\nXP: *" + xpArr[16] + "*", true)
-                            .addField("__**Agility**__", "LVL: *" + lvlArr[17] + "*\nXP: *" + xpArr[17] + "*", true)
-                            .addField("__**Thieving**__", "LVL: *" + lvlArr[18] + "*\nXP: *" + xpArr[18] + "*", true)
-                            .addField("__**Slayer**__", "LVL: *" + lvlArr[19] + "*\nXP: *" + xpArr[19] + "*", true)
-                            .addField("__**Farming**__", "LVL: *" + lvlArr[20] + "*\nXP: *" + xpArr[20] + "*", true)
-                            .addField("__**Runecraft**__", "LVL: *" + lvlArr[21] + "*\nXP: *" + xpArr[21] + "*", true)
-                            .addField("__**Hunter**__", "LVL: *" + lvlArr[22] + "*\nXP: *" + xpArr[22] + "*", true)
-                            .addField("__**Construction**__", "LVL: *" + lvlArr[23] + "*\nXP: *" + xpArr[23] + "*", true)
-                            .addField("__**Overall**__", "LVL: *" + lvlArr[0] + "*\nXP: *" + xpArr[0] + "*", true)
+                            .addField("__**Attack**__", lvlXPArr[1], true)
+                            .addField("__**Defence**__", lvlXPArr[2], true)
+                            .addField("__**Strength**__", lvlXPArr[3], true)
+                            .addField("__**Hitpoints**__", lvlXPArr[4], true)
+                            .addField("__**Ranged**__", lvlXPArr[5], true)
+                            .addField("__**Prayer**__", lvlXPArr[6], true)
+                            .addField("__**Magic**__", lvlXPArr[7], true)
+                            .addField("__**Cooking**__", lvlXPArr[8], true)
+                            .addField("__**Woodcutting**__", lvlXPArr[9], true)
+                            .addField("__**Fletching**__", lvlXPArr[10], true)
+                            .addField("__**Fishing**__", lvlXPArr[11], true)
+                            .addField("__**Firemaking**__", lvlXPArr[12], true)
+                            .addField("__**Crafting**__", lvlXPArr[13], true)
+                            .addField("__**Smithing**__", lvlXPArr[14], true)
+                            .addField("__**Mining**__", lvlXPArr[15], true)
+                            .addField("__**Herblore**__", lvlXPArr[16], true)
+                            .addField("__**Agility**__", lvlXPArr[17], true)
+                            .addField("__**Thieving**__", lvlXPArr[18], true)
+                            .addField("__**Slayer**__", lvlXPArr[19], true)
+                            .addField("__**Farming**__", lvlXPArr[20], true)
+                            .addField("__**Runecraft**__", lvlXPArr[21], true)
+                            .addField("__**Hunter**__", lvlXPArr[22], true)
+                            .addField("__**Construction**__", lvlXPArr[23], true)
+                            .addField("__**Overall**__", lvlXPArr[0], true)
                             .setTimestamp()
-
                         msg.channel.send(embed);
                     }
                 }
