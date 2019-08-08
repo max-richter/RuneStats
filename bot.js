@@ -6,7 +6,8 @@ const cheerio = require("cheerio");
 const client = new Discord.Client();
 const prefix = "!";
 const config = require("./config");
-const url = "https://secure.runescape.com/m=hiscore_oldschool/hiscorepersonal.ws?user1=";
+const playerURL = "https://secure.runescape.com/m=hiscore_oldschool/hiscorepersonal.ws?user1=";
+const pollURL = "http://services.runescape.com/m=poll/oldschool/index.ws";
 const playerPic = "https://secure.runescape.com/m=avatar-rs/";
 
 /**
@@ -50,8 +51,9 @@ client.on("message", async msg => {
 
     // posts list of commands
     if (command === "help") { 
-        msg.channel.send("```!search <username> (retrieves stats for specified user)\n\n" +
-        "!skills <username> (lists all skills for specified user)```");
+        msg.channel.send(":bookmark: Still have questions? Head to https://runestats.xyz/ to see FAQ's!\n" + 
+        "```!search <username> - retrieves stats for specified user\n\n" +
+        "!polls - lists all skills for specified user```");
     }
     
     // player search functionality
@@ -65,7 +67,7 @@ client.on("message", async msg => {
             msg.channel.send(':mag_right: Searching OSRS stats for **' + username + "**");
 
             // begin the search
-            request(url + username, function(error, response, html) {
+            request(playerURL + username, function(error, response, html) {
                 // check if website was reached successfully
                 if (!error && response.statusCode == 200) {
                     var $ = cheerio.load(html);
@@ -99,25 +101,25 @@ client.on("message", async msg => {
                     } else {
                         // fix formatting issues
                         for (var i = 0; i < 24; i++) {
-                        skillsArr[i] = skillsArr[i].replace(/(\r\n|\n|\r)/gm," ");
-                        lvlArr[i] = lvlArr[i].replace(/(\r\n|\n|\r)/gm," ");
-                        xpArr[i] = xpArr[i].replace(/(\r\n|\n|\r)/gm," ");
+                            skillsArr[i] = skillsArr[i].replace(/(\r\n|\n|\r)/gm," ");
+                            lvlArr[i] = lvlArr[i].replace(/(\r\n|\n|\r)/gm," ");
+                            xpArr[i] = xpArr[i].replace(/(\r\n|\n|\r)/gm," ");
                         }
                         // put LVL/XP into array with formatting
                         var lvlXPArr = new Array();
                         for (var i = 0; i < 24; i++) {
-                            lvlXPArr.push("LVL: *" + lvlArr[i] + "*\nXP: *" + xpArr[i] + "*")
+                            lvlXPArr.push("LVL: *" + lvlArr[i] + "*\nXP: *" + xpArr[i] + "*");
                         }
                         // calls function that sends rich embed
                         embeddedMessage();
                     }
 
-                    // here the bot creates and sends an embedded message
+                    // format and send rich embed
                     function embeddedMessage() {
                         const embed = new Discord.RichEmbed()
                             .setColor("#86C3FF")
                             .setTitle("View Complete Stat Page")
-                            .setURL(url + username)
+                            .setURL(playerURL + username)
                             .setAuthor(username + "'s " + "OSRS Stats")
                             .setThumbnail(playerPic + username + "/chat.png")
                             .setFooter("@max-richter", client.user.avatarURL)
@@ -151,6 +153,52 @@ client.on("message", async msg => {
                 }
             });
         }       
+    }
+
+    // returns latest poll information
+    if (command === "polls") {
+        msg.channel.send(":bulb: Grabbing latest poll information!");
+        const linkToPoll = "http://services.runescape.com/m=poll/oldschool/";
+
+        // search for poll info
+        request(pollURL, function(error, response, html) {
+            // check if page is up
+            if (!error && response.statusCode == 200) {
+                var $ = cheerio.load(html);
+                var prevPollArr = new Array();
+                var linkArr = new Array();
+
+                // search for poll elements
+                $('div').each(function(i, element) {
+                    var polls = $(this).children().closest('b');
+                    var links = $(this).children().closest('a').attr('href');
+                    // only add result urls to array
+                    if (links !== undefined) {
+                        if (links.charAt(0) === 'r') {
+                            linkArr.push(links);
+                        }
+                    }
+                    prevPollArr.push(polls.text()); // pushes poll titles to array
+                });
+                var cleanArr = prevPollArr.filter(poll => poll.length > 4); // remove garbage elements
+                linkMessage(); // calls function that creates/sends embed
+
+                // format and send rich embed
+                function linkMessage() {
+                    const linkedEmbed = new Discord.RichEmbed ()
+                        .setColor("#86C3FF")
+                        .setAuthor("Latest Poll Information")
+                        .setFooter("@max-richter", client.user.avatarURL)
+                        .setTitle("Click *Results* to view detailed overview of the final results")
+                        .setThumbnail("https://i.imgur.com/Cp0d6xl.png")
+                        .setTimestamp()
+                        .addField("__**"+cleanArr[0]+"**__", "[Results](" + linkToPoll+linkArr[0] + ")")
+                        .addField("__**"+cleanArr[1]+"**__", "[Results](" + linkToPoll+linkArr[1] + ")")
+                        .addField("__**"+cleanArr[2]+"**__", "[Results](" + linkToPoll+linkArr[2] + ")")
+                    msg.channel.send(linkedEmbed);
+                }
+            }
+        });
     }
 });
 
