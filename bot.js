@@ -17,8 +17,8 @@ client.on("ready", () => {
     // logs info to terminal
     console.log(`Bot is on, with ${client.users.size} users, in ${client.channels.size} channels 
     of ${client.guilds.size} servers.`);
-    // sets bots activity to display num of servers  TODO: change to !help possibly?
-    client.user.setActivity(`I am in ${client.guilds.size} servers`);
+    // sets bots activity to display runestats site
+    client.user.setActivity('runestats.xyz', { type: "PLAYING" });
 });
 
 /**
@@ -72,7 +72,6 @@ client.on("message", async msg => {
 
                     // arrays that hold player data
                     var skillsArr = new Array();
-                    //var rankArr = new Array(); TODO: think about whether to keep this or not
                     var lvlArr = new Array();
                     var xpArr = new Array(); 
 
@@ -80,12 +79,10 @@ client.on("message", async msg => {
                     $('tr').each(function(i, element) {
                         // store element objects
                         var skills = $(this).next().children().children(); // skills
-                        //var rank = $(this).next().children().eq(2); TODO: think about whether to keep this or not
                         var skillLvl = $(this).next().children().eq(3); // skill levels
                         var xp = $(this).next().children().eq(4); // xp
 
                         skillsArr.push(skills.text());
-                        //rankArr.push(rank.text()); TODO: think about whether to keep this or not
                         lvlArr.push(skillLvl.text());
                         xpArr.push(xp.text()); 
 
@@ -95,7 +92,6 @@ client.on("message", async msg => {
                     skillsArr = skillsArr.splice(4);
                     lvlArr = lvlArr.splice(4);
                     xpArr = xpArr.splice(4);
-                    //rankArr = rankArr.splice(4); TODO: think about whether to keep this or not
 
                     // check if user was found in db
                     if (skillsArr[0] == undefined) {
@@ -104,7 +100,6 @@ client.on("message", async msg => {
                         // fix formatting issues
                         for (var i = 0; i < 24; i++) {
                         skillsArr[i] = skillsArr[i].replace(/(\r\n|\n|\r)/gm," ");
-                        //rankArr[i] = rankArr[i].replace(/(\r\n|\n|\r)/gm," "); TODO: think about whether to keep this or not
                         lvlArr[i] = lvlArr[i].replace(/(\r\n|\n|\r)/gm," ");
                         xpArr[i] = xpArr[i].replace(/(\r\n|\n|\r)/gm," ");
                         }
@@ -113,6 +108,7 @@ client.on("message", async msg => {
                         for (var i = 0; i < 24; i++) {
                             lvlXPArr.push("LVL: *" + lvlArr[i] + "*\nXP: *" + xpArr[i] + "*")
                         }
+                        // calls function that sends rich embed
                         embeddedMessage();
                     }
 
@@ -122,7 +118,7 @@ client.on("message", async msg => {
                             .setColor("#86C3FF")
                             .setTitle("View Complete Stat Page")
                             .setURL(url + username)
-                            .setAuthor(username + "'s OSRS Stats")
+                            .setAuthor(username + "'s " + "OSRS Stats")
                             .setThumbnail(playerPic + username + "/chat.png")
                             .setFooter("@max-richter", client.user.avatarURL)
                             .addField("__**Attack**__", lvlXPArr[1], true)

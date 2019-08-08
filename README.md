@@ -1,6 +1,6 @@
 # runescape-discord-bot
 
-### TODO
+## TODO
 
 - [x] Add discord.js boilerplate code
 - [x] Add basic chat functionality
@@ -9,7 +9,8 @@
 - [x] Use 'requests' and 'cheerio' to extract player info from OSRS leaderboards
 - [ ] Add search functionality for ironman, hardcore ironman, ultimate ironman
 
-#### Dependencies
-* discord.js
-* request
-* cheerio
+### Dependencies
+
+- discord.js
+- request
+- cheerio
