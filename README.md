@@ -8,8 +8,8 @@
 - [x] Functionality for !search command
 - [x] Use 'requests' and 'cheerio' to extract player info from OSRS leaderboards
 - [ ] Add search functionality for ironman, hardcore ironman, ultimate ironman
-- [ ] Fix argument array to concatenate usernames with spaces
-- [ ] Add functionality to display poll results for !polls command
+- [ ] Fix argument array to concatenate usernames with spaces (#1 priority)
+- [ ] Add oauth authentication
 
 ### Dependencies
 
