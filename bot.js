@@ -23,14 +23,6 @@ client.on("ready", () => {
 });
 
 /**
- * Set's activity of the bot to number of servers it's used in
- */
-client.on("guildCreate", guild => {
-    // update number of servers
-    client.user.setActivity(`RuneStats is in ${client.guilds.size} servers`);
-});
-
-/**
  * Handles all message requests
  */
 client.on("message", async msg => {
