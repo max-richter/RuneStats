@@ -32,9 +32,16 @@ client.on("message", async msg => {
         return;
     }
 
-    // separates arguments from commands
-    const args = msg.content.slice(prefix.length).split((' '));
-    const command = args.shift().toLowerCase();
+    // separates arguments from commands, includes support for usernames with whitespaces
+    const tempArgs = msg.content.slice(prefix.length).split((' '));
+    const command = tempArgs.shift().toLowerCase();
+    const args = msg.content.split(prefix + command);
+    var displayUser = args[1].trimLeft(); // removes whitespace from argument
+    
+    // replaces whitespace with '+' to fix URL promise rejection
+    for (var i = 0; i < 6; i++) {
+        args[1] = args[1].trimLeft().replace(' ', '+');
+    }
 
     // all commands that work 
     if (command === "test") {
@@ -51,12 +58,12 @@ client.on("message", async msg => {
     // player search functionality
     if (command === "search") {
         // check if user provides a username
-        if (!args.length) {
+        if (args[1] === '') {
             msg.channel.send("Please provide a username!");
         } else {
             // success message sent, username stored to array
-            var username = args[0];
-            msg.channel.send(':mag_right: Searching OSRS stats for **' + username + "**");
+            var username = args[1];
+            msg.channel.send(':mag_right: Searching OSRS stats for **' + displayUser + "**");
 
             // begin the search
             request(playerURL + username, function(error, response, html) {
@@ -89,7 +96,7 @@ client.on("message", async msg => {
 
                     // check if user was found in db
                     if (skillsArr[0] == undefined) {
-                        msg.channel.send(":x: **" + username + "** wasn't found!");
+                        msg.channel.send(":x: **" + displayUser + "** wasn't found!");
                     } else {
                         // fix formatting issues
                         for (var i = 0; i < 24; i++) {
@@ -112,7 +119,7 @@ client.on("message", async msg => {
                             .setColor("#86C3FF")
                             .setTitle("View Complete Stat Page")
                             .setURL(playerURL + username)
-                            .setAuthor(username + "'s " + "OSRS Stats")
+                            .setAuthor(displayUser + "'s " + "OSRS Stats")
                             .setThumbnail(playerPic + username + "/chat.png")
                             .setFooter("@max-richter", client.user.avatarURL)
                             .addField("__**Attack**__", lvlXPArr[1], true)
