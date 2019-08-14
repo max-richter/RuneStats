@@ -9,7 +9,7 @@
 - [x] Use 'requests' and 'cheerio' to extract player info from OSRS leaderboards
 - [ ] Add search functionality for ironman, hardcore ironman, ultimate ironman
 - [x] Fix argument array to concatenate usernames with spaces (#1 priority)
-- [ ] Add oauth authentication
+- [x] Add oauth authentication **STILL NEED TO ADD REDIRECT LINK**
 
 ### Dependencies
 
