@@ -42,24 +42,12 @@ client.on("message", async msg => {
     for (var i = 0; i < 6; i++) {
         args[1] = args[1].trimLeft().replace(' ', '+');
     }
-
-    // all commands that work 
-    if (command === "test") {
-        msg.channel.send("RuneStats is **[on]**");
-    }
-
-    // posts list of commands
-    if (command === "help") { 
-        msg.channel.send(":bookmark: Still have questions? Head to https://runestats.xyz/ to see FAQ's!\n" + 
-        "```!search <username> - retrieves stats for specified user\n\n" +
-        "!polls - lists all skills for specified user```");
-    }
     
-    // player search functionality
+    // core player search implementation
     if (command === "search") {
         // check if user provides a username
         if (args[1] === '') {
-            msg.channel.send("Please provide a username!");
+            msg.channel.send(":loudspeaker: **Please provide a username!**");
         } else {
             // success message sent, username stored to array
             var username = args[1];
@@ -152,10 +140,7 @@ client.on("message", async msg => {
                 }
             });
         }       
-    }
-
-    // returns latest poll information
-    if (command === "polls") {
+    } else if (command === "polls") { // posts latest poll info
         msg.channel.send(":bulb: Grabbing latest poll information!");
         const linkToPoll = "http://services.runescape.com/m=poll/oldschool/";
 
@@ -198,6 +183,12 @@ client.on("message", async msg => {
                 }
             }
         });
+    } else if (command === "help") {  // posts list of commands and their functions
+        msg.channel.send(":bookmark: Still have questions? Head to https://runestats.xyz/ to see FAQ's!\n" + 
+        "```!search <username> - retrieves stats for specified user\n\n" +
+        "!polls - lists all skills for specified user```");
+    } else { // post message if command doesn't exist
+        msg.channel.send(":rotating_light: **Command not found!** Type **!help** for a list of commands");
     }
 });
 
