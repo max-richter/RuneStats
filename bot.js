@@ -7,6 +7,7 @@ const client = new Discord.Client();
 const prefix = "!";
 const config = require("./config");
 const playerURL = "https://secure.runescape.com/m=hiscore_oldschool/hiscorepersonal.ws?user1=";
+const ironmanURL = "https://secure.runescape.com/m=hiscore_oldschool_ironman/hiscorepersonal.ws?user1=";
 const pollURL = "http://services.runescape.com/m=poll/oldschool/index.ws";
 const playerPic = "https://secure.runescape.com/m=avatar-rs/";
 
@@ -187,6 +188,101 @@ client.on("message", async msg => {
         msg.channel.send(":bookmark: Still have questions? Head to https://runestats.xyz/ to see FAQ's!\n" + 
         "```!search <username> - retrieves stats for specified user\n\n" +
         "!polls - lists all skills for specified user```");
+    } else if (command === "ironman") { // search functionality for pulling ironman stats
+        if (args[1] === '') {
+            msg.channel.send(":loudspeaker: **Please provide a username!**");
+        } else {
+            // success message sent, username stored to array
+            var username = args[1];
+            msg.channel.send(':mag_right: Searching OSRS stats for **' + displayUser + "**");
+
+            // begin the search
+            request(ironmanURL + username, function(error, response, html) {
+                // check if website was reached successfully
+                if (!error && response.statusCode == 200) {
+                    var $ = cheerio.load(html);
+
+                    // arrays that hold player data
+                    var skillsArr = new Array();
+                    var lvlArr = new Array();
+                    var xpArr = new Array(); 
+
+                    // find stats
+                    $('tr').each(function(i, element) {
+                        // store element objects
+                        var skills = $(this).next().children().children(); // skills
+                        var skillLvl = $(this).next().children().eq(3); // skill levels
+                        var xp = $(this).next().children().eq(4); // xp
+
+                        skillsArr.push(skills.text());
+                        lvlArr.push(skillLvl.text());
+                        xpArr.push(xp.text()); 
+
+                    });
+
+                    // sort skills
+                    skillsArr = skillsArr.splice(4);
+                    lvlArr = lvlArr.splice(4);
+                    xpArr = xpArr.splice(4);
+
+                    // check if user was found in db
+                    if (skillsArr[0] == undefined) {
+                        msg.channel.send(":x: **" + displayUser + "** wasn't found!");
+                    } else {
+                        // fix formatting issues
+                        for (var i = 0; i < 24; i++) {
+                            skillsArr[i] = skillsArr[i].replace(/(\r\n|\n|\r)/gm," ");
+                            lvlArr[i] = lvlArr[i].replace(/(\r\n|\n|\r)/gm," ");
+                            xpArr[i] = xpArr[i].replace(/(\r\n|\n|\r)/gm," ");
+                        }
+                        // put LVL/XP into array with formatting
+                        var lvlXPArr = new Array();
+                        for (var i = 0; i < 24; i++) {
+                            lvlXPArr.push("LVL: *" + lvlArr[i] + "*\nXP: *" + xpArr[i] + "*");
+                        }
+                        // calls function that sends rich embed
+                        ironmanMessage();
+                    }
+
+                    // format and send rich embed
+                    function ironmanMessage() {
+                        const embed = new Discord.RichEmbed()
+                            .setColor("#86C3FF")
+                            .setTitle("View Complete Stat Page")
+                            .setURL(ironmanURL + username)
+                            .setAuthor(displayUser + "'s " + "OSRS Stats")
+                            .setThumbnail(playerPic + username + "/chat.png")
+                            .setFooter("@max-richter", client.user.avatarURL)
+                            .addField("__**Attack**__", lvlXPArr[1], true)
+                            .addField("__**Defence**__", lvlXPArr[2], true)
+                            .addField("__**Strength**__", lvlXPArr[3], true)
+                            .addField("__**Hitpoints**__", lvlXPArr[4], true)
+                            .addField("__**Ranged**__", lvlXPArr[5], true)
+                            .addField("__**Prayer**__", lvlXPArr[6], true)
+                            .addField("__**Magic**__", lvlXPArr[7], true)
+                            .addField("__**Cooking**__", lvlXPArr[8], true)
+                            .addField("__**Woodcutting**__", lvlXPArr[9], true)
+                            .addField("__**Fletching**__", lvlXPArr[10], true)
+                            .addField("__**Fishing**__", lvlXPArr[11], true)
+                            .addField("__**Firemaking**__", lvlXPArr[12], true)
+                            .addField("__**Crafting**__", lvlXPArr[13], true)
+                            .addField("__**Smithing**__", lvlXPArr[14], true)
+                            .addField("__**Mining**__", lvlXPArr[15], true)
+                            .addField("__**Herblore**__", lvlXPArr[16], true)
+                            .addField("__**Agility**__", lvlXPArr[17], true)
+                            .addField("__**Thieving**__", lvlXPArr[18], true)
+                            .addField("__**Slayer**__", lvlXPArr[19], true)
+                            .addField("__**Farming**__", lvlXPArr[20], true)
+                            .addField("__**Runecraft**__", lvlXPArr[21], true)
+                            .addField("__**Hunter**__", lvlXPArr[22], true)
+                            .addField("__**Construction**__", lvlXPArr[23], true)
+                            .addField("__**Overall**__", lvlXPArr[0], true)
+                            .setTimestamp()
+                        msg.channel.send(embed);
+                    }
+                }
+            });
+        }
     } else { // post message if command doesn't exist
         msg.channel.send(":rotating_light: **Command not found!** Type **!help** for a list of commands");
     }
