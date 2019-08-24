@@ -10,6 +10,7 @@
 - [ ] Add search functionality for ironman, hardcore ironman, ultimate ironman
 - [x] Fix argument array to concatenate usernames with spaces (#1 priority)
 - [x] Add oauth authentication **STILL NEED TO ADD REDIRECT LINK**
+- [ ] Change "var" to "let" in for loops
 
 ### Dependencies
 
