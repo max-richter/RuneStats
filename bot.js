@@ -40,7 +40,7 @@ client.on("message", async msg => {
     var displayUser = args[1].trimLeft(); // removes whitespace from argument
     
     // replaces whitespace with '+' to fix URL promise rejection
-    for (var i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; i++) {
         args[1] = args[1].trimLeft().replace(' ', '+');
     }
     
@@ -88,14 +88,14 @@ client.on("message", async msg => {
                         msg.channel.send(":x: **" + displayUser + "** wasn't found!");
                     } else {
                         // fix formatting issues
-                        for (var i = 0; i < 24; i++) {
+                        for (let i = 0; i < 24; i++) {
                             skillsArr[i] = skillsArr[i].replace(/(\r\n|\n|\r)/gm," ");
                             lvlArr[i] = lvlArr[i].replace(/(\r\n|\n|\r)/gm," ");
                             xpArr[i] = xpArr[i].replace(/(\r\n|\n|\r)/gm," ");
                         }
                         // put LVL/XP into array with formatting
                         var lvlXPArr = new Array();
-                        for (var i = 0; i < 24; i++) {
+                        for (let i = 0; i < 24; i++) {
                             lvlXPArr.push("LVL: *" + lvlArr[i] + "*\nXP: *" + xpArr[i] + "*");
                         }
                         // calls function that sends rich embed
@@ -230,14 +230,14 @@ client.on("message", async msg => {
                         msg.channel.send(":x: **" + displayUser + "** wasn't found!");
                     } else {
                         // fix formatting issues
-                        for (var i = 0; i < 24; i++) {
+                        for (let i = 0; i < 24; i++) {
                             skillsArr[i] = skillsArr[i].replace(/(\r\n|\n|\r)/gm," ");
                             lvlArr[i] = lvlArr[i].replace(/(\r\n|\n|\r)/gm," ");
                             xpArr[i] = xpArr[i].replace(/(\r\n|\n|\r)/gm," ");
                         }
                         // put LVL/XP into array with formatting
                         var lvlXPArr = new Array();
-                        for (var i = 0; i < 24; i++) {
+                        for (let i = 0; i < 24; i++) {
                             lvlXPArr.push("LVL: *" + lvlArr[i] + "*\nXP: *" + xpArr[i] + "*");
                         }
                         // calls function that sends rich embed
