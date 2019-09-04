@@ -189,9 +189,15 @@ client.on("message", async msg => {
             }
         });
     } else if (command === "help") { // posts list of commands and their functions
+        var searchCom = "!search <username> - retrieves stats for specified user\n";
+        var ironmanCom = "!ironman <username> - retrieves ironman stats for specified user\n";
+        var ultimateCom = "!ultimate <username> - retrieves ultimate ironman stats for specified user\n";
+        var hardcoreCom = "!hardcore <username> - retrieves hardcore ironman stats for specified user\n";
+        var pollsCom = "!polls - lists all skills for specified user";
+
         msg.channel.send(":bookmark: Still have questions? Head to https://runestats.xyz/ to see FAQ's!\n" +
-            "```!search <username> - retrieves stats for specified user\n\n" +
-            "!polls - lists all skills for specified user```");
+            "```" + searchCom + ironmanCom + ultimateCom + hardcoreCom + pollsCom +
+            "```");
     } else if (command === "ironman") { // search functionality for pulling ironman stats
         if (args[1] === '') {
             msg.channel.send(":loudspeaker: **Please provide a username!**");
