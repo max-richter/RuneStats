@@ -1,0 +1,25 @@
+{
+  "name": "runestats",
+  "version": "1.0.0",
+  "description": "OSRS stat bot for Discord",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "discord.js": "11.5.1",
+    "cheerio": "1.0.0-rc.3",
+    "request": "2.88.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/max-richter/runescape-discord-bot.git"
+  },
+  "author": "Max Richter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/max-richter/runescape-discord-bot/issues"
+  },
+  "homepage": "https://github.com/max-richter/runescape-discord-bot#readme"
+}
